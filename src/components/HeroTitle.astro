@@ -1,0 +1,49 @@
+---
+// Niente lato server — è puro contenuto statico
+---
+
+<div class="hero-title-wrap">
+  <h1 class="hero-title">
+    Just<br>Ballin<span class="dot">.</span>
+  </h1>
+</div>
+
+<style>
+  .hero-title-wrap {
+    position: absolute;
+    bottom: 48px;
+    right: 48px;          /* in basso a destra come nello screenshot */
+    z-index: 10;
+    text-align: right;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    /*
+      clamp(minimo, preferito, massimo)
+      - sotto schermi piccoli: 5rem
+      - su schermi medi: 12% della larghezza viewport
+      - su schermi grandi: mai più di 10rem
+      Così il titolo è responsive senza media queries
+    */
+    line-height: 0.88;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+
+  .dot {
+    color: var(--orange);   /* il punto finale è arancione */
+  }
+
+  .hero-tagline {
+    margin-top: 12px;
+    font-family: 'Agdasima', sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    opacity: 0.45;
+    color: var(--white);
+  }
+</style>

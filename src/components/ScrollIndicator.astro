@@ -1,0 +1,102 @@
+---
+// Niente da fare lato server per questo componente
+---
+
+<div class="scroll-indicator">
+  <span class="scroll-label">Scroll</span>
+  <div class="bounce-track">
+    <div class="bounce-ball"></div>
+  </div>
+  <div class="bounce-shadow"></div>
+</div>
+
+<style>
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;                    /* centrato orizzontalmente */
+    transform: translateX(-50%);  /* correzione offset del 50% della sua larghezza */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    z-index: 10;
+  }
+
+  .scroll-label {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.35;
+    margin-bottom: 10px;
+  }
+
+  .bounce-track {
+    width: 2px;
+    height: 72px;
+    background: rgba(245, 240, 232, 0.12);
+    border-radius: 2px;
+    position: relative;    /* necessario per posizionare la palla dentro */
+  }
+
+  .bounce-ball {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--orange);
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%); /* centra la palla sulla linea */
+    box-shadow: 0 0 10px rgba(232, 98, 26, 0.55);
+    animation: dribble 1.15s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  }
+
+  /* Linea verticale della palla (simula le cuciture) */
+  .bounce-ball::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: calc(100% - 4px);
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 1px;
+  }
+
+  /* 
+    L'animazione simula la fisica del rimbalzo:
+    - ease-in nella discesa (accelera cadendo)
+    - ease-out nella risalita (decelera salendo)
+    - piccola pausa in fondo (impatto col pavimento)
+  */
+  @keyframes dribble {
+    0%   { top: 0;                 animation-timing-function: ease-in;  }
+    48%  { top: calc(100% - 13px); animation-timing-function: ease-out; }
+    52%  { top: calc(100% - 13px); animation-timing-function: ease-in;  }
+    100% { top: 0; }
+  }
+
+  /* Ombra che si schiaccia quando la palla tocca il fondo */
+  .bounce-shadow {
+    width: 9px;
+    height: 3px;
+    background: rgba(232, 98, 26, 0.28);
+    border-radius: 50%;
+    margin-top: 1px;
+    animation: shadowDribble 1.15s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  }
+
+  @keyframes shadowDribble {
+    0%   { transform: scaleX(0.3); opacity: 0.15; } /* palla in alto = ombra piccola */
+    48%  { transform: scaleX(1);   opacity: 0.55; } /* palla in basso = ombra grande */
+    52%  { transform: scaleX(1);   opacity: 0.55; }
+    100% { transform: scaleX(0.3); opacity: 0.15; }
+  }
+</style>
+
+<!-- Niente <script> — questo componente è puro CSS, zero JavaScript -->

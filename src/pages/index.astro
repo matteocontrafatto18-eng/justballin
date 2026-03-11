@@ -1,12 +1,16 @@
 ---
 import Loader from '../components/Loader.astro';
+import Nav from '../components/Nav.astro';
+import LogoCTA from '../components/LogoCTA.astro';
+import HeroTitle from '../components/HeroTitle.astro';
+import ScrollIndicator from '../components/ScrollIndicator.astro';
 ---
 
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
     <title>Just Ballin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=Bebas+Neue&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
     <style>
       :root {
         --black: #080808;
@@ -19,6 +23,19 @@ import Loader from '../components/Loader.astro';
   </head>
   <body>
     <Loader />
-    <h1>Home page — presto qui!</h1>
+    <section class="hero">
+      <Nav />
+      <ScrollIndicator />
+	  <HeroTitle />
+	  <LogoCTA />
+    </section>
   </body>
 </html>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+</style>

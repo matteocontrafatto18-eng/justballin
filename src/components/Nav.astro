@@ -1,0 +1,86 @@
+---
+// Le voci del menu le definiamo qui nel frontmatter
+// Così in futuro basta modificare questo array per aggiungere/rimuovere voci
+const links = [
+  { label: 'Game',  href: '/game'  },
+  { label: 'Stats', href: '/stats' },
+  { label: 'Drama', href: '/drama' },
+];
+---
+
+<nav class="nav">
+  {links.map(link => (
+    <a href={link.href} class="nav-link">{link.label}</a>
+  ))}
+</nav>
+
+<style>
+  .nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 44px;
+    padding: 36px 48px;
+  }
+
+  .nav-link {
+    font-family: 'Agdasima', sans-serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    position: relative;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Linea arancione animata sotto ogni voce all'hover */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--orange);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover {
+    opacity: 1;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Voce attiva — la pagina in cui si trova l'utente */
+  .nav-link.active {
+    opacity: 1;
+    color: var(--orange);
+  }
+
+  .nav-link.active::after {
+    width: 100%;
+    background: var(--orange);
+  }
+</style>
+
+<script>
+  // Evidenzia automaticamente la voce del menu
+  // corrispondente alla pagina corrente
+  const links = document.querySelectorAll('.nav-link');
+  const current = window.location.pathname;
+
+  links.forEach(link => {
+    if (link.getAttribute('href') === current) {
+      link.classList.add('active');
+    }
+  });
+</script>

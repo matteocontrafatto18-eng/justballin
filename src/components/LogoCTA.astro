@@ -1,0 +1,108 @@
+---
+// Niente da fare lato server
+---
+
+<a class="logo-cta" href="/game">
+  <img class="logo-img" src="/logo.png" alt="Just Ballin Logo" />
+  <div class="cta-reveal">
+    <div class="cta-inner">
+      Tip Off <span class="cta-arrow">→</span>
+    </div>
+  </div>
+  <div class="cta-line"></div>
+</a>
+
+<style>
+  .logo-cta {
+    position: absolute;
+    bottom: 48px;
+    left: 48px;           /* basso a sinistra */
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 10;
+  }
+
+  .logo-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* 
+    Il testo "Tip Off →" è nascosto di default:
+    max-width: 0 + overflow: hidden = invisibile ma già nel DOM
+    Al hover max-width si espande e il testo scorre fuori dal logo
+  */
+  .cta-reveal {
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    transition:
+      max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity   0.35s ease 0.08s;
+    white-space: nowrap;   /* impedisce al testo di andare a capo */
+  }
+
+  .cta-inner {
+    padding-left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Agdasima', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .cta-arrow {
+    color: var(--orange);
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  /* 
+    Linea arancione che si disegna sotto il testo 
+    Parte da left: 80px (subito dopo il logo)
+    e si estende fino alla fine del testo
+  */
+  .cta-line {
+    position: absolute;
+    bottom: -3px;
+    left: 80px;
+    height: 1px;
+    background: var(--orange);
+    width: 0;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.08s;
+  }
+
+  /* ── HOVER STATES ── */
+
+  /* Logo ruota e si ingrandisce leggermente */
+  .logo-cta:hover .logo-img {
+    transform: rotate(-14deg) scale(1.1);
+  }
+
+  /* Testo scorre fuori */
+  .logo-cta:hover .cta-reveal {
+    max-width: 260px;
+    opacity: 1;
+  }
+
+  /* Freccia si sposta a destra */
+  .logo-cta:hover .cta-arrow {
+    transform: translateX(6px);
+  }
+
+  /* Linea si disegna */
+  .logo-cta:hover .cta-line {
+    width: calc(100% - 80px);
+  }
+</style>
+
+<!-- Niente <script> — tutto gestito con CSS transitions -->
