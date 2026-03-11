@@ -1,0 +1,152 @@
+---
+// Niente da fare sul server per questo componente
+// Il loader è pura logica client
+---
+
+<div id="loader">
+  <div class="loader-ball-wrap" id="loaderWrap">
+    <svg class="loader-svg" viewBox="0 0 100 100">
+      <defs>
+        <clipPath id="fc">
+          <rect id="fr" x="0" y="100" width="100" height="0"/>
+        </clipPath>
+      </defs>
+      <circle cx="50" cy="50" r="45" fill="#1c1c1c"/>
+      <circle cx="50" cy="50" r="45" fill="var(--orange)" clip-path="url(#fc)"/>
+      <g class="ball-lines" id="bl">
+        <path d="M50 5 Q66 25 66 50 Q66 75 50 95" fill="none" stroke="#080808" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M50 5 Q34 25 34 50 Q34 75 50 95" fill="none" stroke="#080808" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="7" y1="34" x2="93" y2="34" stroke="#080808" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="7" y1="66" x2="93" y2="66" stroke="#080808" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <circle class="ball-ring" id="br" cx="50" cy="50" r="45"/>
+    </svg>
+  </div>
+  <div class="loader-pct" id="lp">0%</div>
+</div>
+
+<style>
+  /* Le variabili CSS le metteremo nel layout globale,
+     qui le usiamo già sapendo che ci saranno */
+
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+
+  #loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .loader-ball-wrap {
+    width: 88px;
+    height: 88px;
+  }
+
+  .loader-ball-wrap.bounce {
+    animation: ballBounce 0.55s ease forwards;
+  }
+
+  @keyframes ballBounce {
+    0%   { transform: translateY(0)    scale(1, 1);       }
+    30%  { transform: translateY(-22px) scale(0.94, 1.06); }
+    60%  { transform: translateY(0)    scale(1.06, 0.94); }
+    80%  { transform: translateY(-8px) scale(0.98, 1.02); }
+    100% { transform: translateY(0)    scale(1, 1);       }
+  }
+
+  .loader-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg); /* parte dal basso */
+  }
+
+  .ball-lines {
+    opacity: 0;
+    transition: opacity 0.35s ease 0.9s;
+  }
+
+  .ball-lines.visible {
+    opacity: 1;
+  }
+
+  .ball-ring {
+    fill: none;
+    stroke: var(--orange);
+    stroke-width: 3;
+    stroke-dasharray: 283;    /* circonferenza del cerchio r=45: 2πr ≈ 283 */
+    stroke-dashoffset: 283;   /* parte "vuoto" */
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ball-ring.go {
+    stroke-dashoffset: 0;     /* si riempie completamente */
+  }
+
+  .loader-pct {
+    margin-top: 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.9rem;
+    color: var(--orange);
+    letter-spacing: 5px;
+  }
+</style>
+
+<script>
+  // Tutto questo codice gira nel browser
+  const fr   = document.getElementById('fr');      // rect che crea il fill
+  const br   = document.getElementById('br');      // ring di progresso
+  const bl   = document.getElementById('bl');      // linee della palla
+  const lp   = document.getElementById('lp');      // testo percentuale
+  const wrap = document.getElementById('loaderWrap');
+  const ldr  = document.getElementById('loader');
+
+  const DURATION = 1400; // millisecondi totali del loader
+  const t0 = performance.now(); // timestamp di partenza
+
+  // Easing: parte lento, accelera, rallenta alla fine
+  function ease(t: number) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  // Avvia il ring subito
+  if (br) requestAnimationFrame(() => br.classList.add('go'));
+
+  function tick(now: number) {
+    const raw = Math.min((now - t0) / DURATION, 1); // 0 → 1 lineare
+    const e   = ease(raw);                           // 0 → 1 con easing
+    const pct = Math.round(e * 100);
+
+    // Aggiorna il testo
+    if (lp) lp.textContent = pct + '%';
+
+    // Sposta il rettangolo di clip verso l'alto (fill dal basso)
+    const y = (1 - e) * 100;
+    if (fr) {
+      fr.setAttribute('y', String(y));
+      fr.setAttribute('height', String(100 - y + 2));
+    }
+
+    if (raw < 1) {
+      requestAnimationFrame(tick); // continua finché non arriva a 100
+    } else {
+      // Fine: mostra le linee, fa il bounce, nasconde il loader
+      if (bl) bl.classList.add('visible');
+      if (wrap) wrap.classList.add('bounce');
+      if (ldr) ldr.classList.add('hidden');
+      setTimeout(() => {
+        if (ldr) ldr.classList.add('hidden');
+      }, 720);
+    }
+  }
+
+  requestAnimationFrame(tick);
+</script>

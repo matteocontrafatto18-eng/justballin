@@ -1,11 +1,24 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Loader from '../components/Loader.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Just Ballin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
+    <style>
+      :root {
+        --black: #080808;
+        --white: #f5f0e8;
+        --orange: #E8621A;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: var(--black); color: var(--white); }
+    </style>
+  </head>
+  <body>
+    <Loader />
+    <h1>Home page — presto qui!</h1>
+  </body>
+</html>
