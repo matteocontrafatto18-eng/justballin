@@ -1,0 +1,40 @@
+---
+// src/pages/game.astro
+// Pagina raggiungibile su /game
+// Viene aperta cliccando "Tip Off" dalla home
+import FreeThrow from '../components/FreeThrow/FreeThrow.astro';
+---
+
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Throw — Just Ballin</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Agdasima:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --black:  #080808;
+        --white:  #f5f0e8;
+        --orange: #E8621A;
+        --green:  #2ecc40;
+        --red:    #e8271a;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: 'Press Start 2P', monospace;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <FreeThrow />
+  </body>
+</html>

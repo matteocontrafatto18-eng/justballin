@@ -1,0 +1,138 @@
+---
+// src/components/FreeThrow/FreeThrow.astro
+// Niente da fare lato server — il gioco è tutto client-side
+---
+
+<div id="game-wrap">
+
+  <canvas id="c" width="600" height="580"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hud-item">PUNTI<br><span class="hud-val" id="hud-score">0</span></div>
+    <div class="hud-item" style="font-size:.3rem;color:#222">JUST BALLIN</div>
+    <div class="hud-item" style="text-align:right">
+      VITE
+      <div class="hud-hearts">
+        <span class="heart" id="h1">🏀</span>
+        <span class="heart" id="h2">🏀</span>
+        <span class="heart" id="h3">🏀</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIFFICULTY -->
+  <div id="diff-label">LV<br><span id="diff-val">1</span></div>
+
+  <!-- POWER BAR -->
+  <div id="bar-wrap">
+    <div id="bar-label">T<br>I<br>R<br>O</div>
+    <div id="bar-track">
+      <div id="bar-green"></div>
+      <div id="bar-needle"></div>
+    </div>
+    <div id="bar-space">SPC</div>
+  </div>
+
+  <!-- COMBO -->
+  <div id="combo"></div>
+
+  <!-- FEEDBACK -->
+  <div id="feedback"></div>
+
+  <!-- ══ INTRO ══ -->
+  <div class="screen" id="screen-intro">
+    <div class="stars" id="stars"></div>
+    <div class="pixel-title">🏀 FREE<br>THROW</div>
+    <div class="pixel-rules">
+      PREMI <span class="hl">SPAZIO</span> QUANDO IL CURSORE<br>
+      È NELLA ZONA <span class="gr">VERDE</span> PER FARE CANESTRO<br><br>
+      OGNI CANESTRO VALE <span class="hl">+3 PUNTI</span><br>
+      LA ZONA VERDE SI RIMPICCIOLISCE OGNI 3 CANESTRI<br>
+      <span class="gr">HAI 3 VITE — BUONA FORTUNA!</span>
+    </div>
+    <button class="pixel-btn" id="btn-start">▶ GIOCA</button>
+  </div>
+
+  <!-- ══ GAME OVER + FORM ══ -->
+  <div class="screen hidden" id="screen-gameover">
+    <div class="go-title">GAME<br>OVER</div>
+    <div class="go-score">PUNTEGGIO<br><span class="big" id="go-score-val">0</span></div>
+    <div class="prize-banner">
+      🏆 I MIGLIORI 3 DEL MESE VINCONO UN PREMIO!<br>
+      INSERISCI I TUOI DATI PER ENTRARE IN CLASSIFICA
+    </div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label class="form-label">NOME E COGNOME</label>
+        <input class="form-input" id="f-name" maxlength="20" placeholder="MARIO ROSSI"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">NICKNAME</label>
+        <input class="form-input" id="f-nick" maxlength="12" placeholder="BALLERINO"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">EMAIL</label>
+        <input class="form-input" id="f-email" type="email" maxlength="30" placeholder="TUA@EMAIL.IT"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">CITTÀ</label>
+        <input class="form-input" id="f-city" maxlength="16" placeholder="MILANO"/>
+      </div>
+    </div>
+    <label class="newsletter-check">
+      <input type="checkbox" id="f-news" checked/>
+      ISCRIVIMI ALLA NEWSLETTER DI JUST BALLIN
+    </label>
+    <div class="btn-row">
+      <button class="pixel-btn-sm" id="btn-save">💾 SALVA</button>
+      <button class="pixel-btn-sm sec" id="btn-skip">SALTA</button>
+    </div>
+  </div>
+
+  <!-- ══ RETURNING PLAYER ══ -->
+  <div class="screen hidden" id="screen-returning">
+    <div class="go-title">GAME<br>OVER</div>
+    <div class="go-score">PUNTEGGIO<br><span class="big" id="returning-score">0</span></div>
+    <div class="returning-hello">
+      BENTORNATO,<br>
+      <span id="returning-name" style="color:var(--orange)">PLAYER</span>!
+    </div>
+    <div class="returning-sub">VUOI SALVARE QUESTO PUNTEGGIO<br>IN CLASSIFICA?</div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="pixel-btn-sm" id="btn-save-returning">💾 SALVA</button>
+      <button class="pixel-btn-sm sec" id="btn-notme">NON SONO IO</button>
+      <button class="pixel-btn-sm sec" id="btn-skip-returning">SALTA</button>
+    </div>
+  </div>
+
+  <!-- ══ LEADERBOARD ══ -->
+  <div class="screen hidden" id="screen-leaderboard">
+    <div class="lb-title">🏆 CLASSIFICA</div>
+    <div class="lb-month" id="lb-month"></div>
+    <table class="lb-table">
+      <thead><tr>
+        <th>#</th><th>NICKNAME</th><th>PUNTI</th><th>CITTÀ</th><th>DATA</th>
+      </tr></thead>
+      <tbody id="lb-body"></tbody>
+    </table>
+    <div class="prize-note">
+      <span>🥇🥈🥉 TOP 3 DEL MESE</span> RICEVERANNO UN PREMIO SPECIALE<br>
+      RIMANI AGGIORNATO SU JUST BALLIN
+    </div>
+    <div class="btn-row">
+      <button class="pixel-btn-sm" id="btn-retry">🔄 RIGIOCA</button>
+    </div>
+  </div>
+
+</div>
+
+<link rel="stylesheet" href="/game.css" />
+
+<!-- 
+  is:inline dice ad Astro:
+  "non processare questo script, trattalo come HTML puro"
+  Senza is:inline Astro lo esegue prima che il DOM sia pronto
+  e getElementById restituisce null su tutto
+-->
+<script is:inline src="/game.js"></script>
